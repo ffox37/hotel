@@ -3,6 +3,7 @@ spring:
     name: hotel
   liquibase:
     enabled: false
+    default-schema: hotel
   datasource:
     url: jdbc:h2:file:./db
     username: root
