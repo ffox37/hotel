@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: hotel
+  liquibase:
+    enabled: false
+  datasource:
+    url: jdbc:h2:file:./db
+    username: root
+    password: root
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: validate
+  h2:
+    console:
+      enabled: true
