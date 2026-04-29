@@ -16,10 +16,6 @@ databaseChangeLog:
                   type: bigint
                   constraints:
                     nullable: false
-        - addPrimaryKey:
-            tableName: hotel_amenity
-            columnNames: (hotel_id, amenity_id)
-            constraintName: pk_hotel_amenity
         - addForeignKeyConstraint:
             constraintName: fk_hotel_amenity_hotel
             baseTableName: hotel_amenity
@@ -34,6 +30,10 @@ databaseChangeLog:
             referencedTableName: amenity
             referencedColumnNames: id
             onDelete: cascade
+        - addPrimaryKey:
+            tableName: hotel_amenity
+            columnNames: hotel_id, amenity_id
+            constraintName: pk_hotel_amenity
         - createIndex:
             tableName: hotel_amenity
             indexName: idx_hotel_amenity_hotel_id

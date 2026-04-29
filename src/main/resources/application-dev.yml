@@ -17,5 +17,4 @@ spring:
       path: /h2-console
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
-    enabled: false
-    default-schema: hotel
+    enabled: true

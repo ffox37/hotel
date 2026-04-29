@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "hotel", schema = "hotel")
+@Table(name = "hotel", schema = "public")
 @Getter
 @Setter
 @Builder
@@ -33,7 +33,7 @@ public class Hotel {
   @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(name = "descripion")
+  @Column(name = "description")
   private String description;
 
   @Column(name = "brand", nullable = false)
