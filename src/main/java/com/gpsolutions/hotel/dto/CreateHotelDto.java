@@ -4,9 +4,9 @@ public record CreateHotelDto(
     String name,
     String description,
     String brand,
-    AddressDto addressDto,
-    ContactsDto contactsDto,
-    ArrivalTimeDto arrivalTimeDto
+    AddressDto address,
+    ContactsDto contacts,
+    ArrivalTimeDto arrivalTime
 ) {
 
 }

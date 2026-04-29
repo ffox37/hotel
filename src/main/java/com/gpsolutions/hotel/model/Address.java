@@ -3,12 +3,10 @@ package com.gpsolutions.hotel.model;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Embeddable
 @Getter
 @Setter
-@ToString
 public class Address {
 
   private Long houseNumber;
@@ -16,4 +14,13 @@ public class Address {
   private String city;
   private String country;
   private String postCode;
+
+  @Override
+  public String toString(){
+    return houseNumber + " "
+        + street + " "
+        + city + " "
+        + country + " "
+        + postCode;
+  }
 }
