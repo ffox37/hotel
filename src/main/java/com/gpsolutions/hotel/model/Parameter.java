@@ -1,5 +1,6 @@
 package com.gpsolutions.hotel.model;
 
+import com.gpsolutions.hotel.exceptions.BadRequestException;
 import java.util.Objects;
 
 public enum Parameter {
@@ -19,13 +20,12 @@ public enum Parameter {
     return parameter.code;
   }
 
-  private static Parameter getParameter(String code) throws Exception{
+  private static Parameter getParameter(String code) {
     for(Parameter param : values()){
       if(Objects.equals(param.code, code)){
         return param;
       }
     }
-    //TODO заменить на настоящую ошибку
-    throw new Exception("Bad Request");
+    throw new BadRequestException("Wrong parameter!");
   }
 }

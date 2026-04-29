@@ -4,7 +4,14 @@ import com.gpsolutions.hotel.dto.CreateHotelDto;
 import com.gpsolutions.hotel.dto.FullHotelDto;
 import com.gpsolutions.hotel.dto.HistogramDto;
 import com.gpsolutions.hotel.dto.HotelDto;
+import com.gpsolutions.hotel.exceptions.NotFoundException;
+import com.gpsolutions.hotel.mapper.HotelMapper;
+import com.gpsolutions.hotel.model.Amenity;
+import com.gpsolutions.hotel.model.Hotel;
 import com.gpsolutions.hotel.model.Parameter;
+import com.gpsolutions.hotel.repository.AmenityRepository;
+import com.gpsolutions.hotel.repository.HotelRepository;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,14 +20,22 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class HotelServiceImpl implements HotelService{
 
+  private final HotelRepository hotelRepository;
+  private final HotelMapper hotelMapper;
+  private final AmenityRepository amenityRepository;
+
   @Override
   public List<HotelDto> getAllHotels() {
-    return List.of();
+    final List<Hotel> hotels = hotelRepository.findAll();
+    return hotels.stream().map(hotelMapper::toDto).toList();
   }
 
   @Override
   public FullHotelDto getFullHotelInfo(final Long id) {
-    return null;
+    final Hotel hotel = hotelRepository.findById(id).orElseThrow(
+        () -> new NotFoundException("Hotel with id=" + id + " wasn't found.")
+    );
+    return hotelMapper.toFullDto(hotel);
   }
 
   @Override
@@ -35,12 +50,33 @@ public class HotelServiceImpl implements HotelService{
 
   @Override
   public HotelDto createHotel(final CreateHotelDto createHotelDto) {
-    return null;
+    Hotel hotel = hotelMapper.fromDto(createHotelDto);
+    hotel = hotelRepository.save(hotel);
+    return hotelMapper.toDto(hotel);
   }
 
   @Override
-  public void addAmenitiesToHotel(final Long id, final List<String> amenities) {
-
+  public void addAmenitiesToHotel(final Long id, final List<String> amenitiesNames) {
+    Hotel hotel = hotelRepository.findById(id).orElseThrow(
+        () -> new NotFoundException("Hotel with id=" + id + " wasn't found."));
+    List<Amenity> amenities = (hotel.getAmenities() == null) ?
+        new ArrayList<>() : hotel.getAmenities();
+    for(String amenityName : amenitiesNames){
+      if(amenityRepository.existsByName(amenityName)){
+        final Amenity existingAmenity = amenityRepository.findByName(amenityName);
+        if(hotel.getAmenities() != null && !hotel.getAmenities().contains(existingAmenity)){
+          amenities.add(existingAmenity);
+        }
+      }
+      else {
+        amenities.add(amenityRepository.save(
+            Amenity.builder()
+                .name(amenityName)
+                .build()));
+      }
+    }
+    hotel.setAmenities(amenities);
+    hotelRepository.save(hotel);
   }
 
   @Override

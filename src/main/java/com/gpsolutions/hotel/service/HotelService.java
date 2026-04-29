@@ -22,7 +22,7 @@ public interface HotelService {
 
   HotelDto createHotel(CreateHotelDto createHotelDto);
 
-  void addAmenitiesToHotel(Long id, List<String> amenities);
+  void addAmenitiesToHotel(Long id, List<String> amenitiesNames);
 
   List<HistogramDto> getHotelHistogram(Parameter parameter);
 }
