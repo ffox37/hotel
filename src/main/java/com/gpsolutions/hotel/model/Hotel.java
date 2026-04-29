@@ -1,6 +1,9 @@
 package com.gpsolutions.hotel.model;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,32 +42,29 @@ public class Hotel {
   @Column(name = "brand", nullable = false)
   private String brand;
 
-  @Column(name = "house_number", nullable = false)
-  private Long houseNumber;
+  @Embedded
+  @AttributeOverrides({
+      @AttributeOverride(name = "houseNumber", column = @Column(name = "house_number")),
+      @AttributeOverride(name = "street", column = @Column(name = "street")),
+      @AttributeOverride(name = "city", column = @Column(name = "city")),
+      @AttributeOverride(name = "country", column = @Column(name = "country")),
+      @AttributeOverride(name = "postCode", column = @Column(name = "post_code")),
+  })
+  private Address address;
 
-  @Column(name = "street", nullable = false)
-  private String street;
+  @Embedded
+  @AttributeOverrides({
+      @AttributeOverride(name = "phone", column = @Column(name = "phone")),
+      @AttributeOverride(name = "email", column = @Column(name = "email")),
+  })
+  private Contacts contacts;
 
-  @Column(name = "city", nullable = false)
-  private String city;
-
-  @Column(name = "country", nullable = false)
-  private String country;
-
-  @Column(name = "post_code", nullable = false)
-  private String postCode;
-
-  @Column(name = "phone", nullable = false)
-  private String phone;
-
-  @Column(name = "email", nullable = false)
-  private String email;
-
-  @Column(name = "check_in", nullable = false)
-  private String checkIn;
-
-  @Column(name = "check_out", nullable = false)
-  private String checkOut;
+  @Embedded
+  @AttributeOverrides({
+      @AttributeOverride(name = "checkIn", column = @Column(name = "check_in")),
+      @AttributeOverride(name = "checkOut", column = @Column(name = "check_out")),
+  })
+  private ArrivalTime arrivalTime;
 
   @ManyToMany
   @JoinTable(name = "hotel_amenity",
