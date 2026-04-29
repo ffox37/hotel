@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_hotel_amenity_table
+      author: Svyatoslav
+      changes:
+        - createTable:
+            tableName: hotel_amenity
+            columns:
+              - column:
+                  name: hotel_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amenity_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            tableName: hotel_amenity
+            columnNames: (hotel_id, amenity_id)
+            constraintName: pk_hotel_amenity
+        - addForeignKeyConstraint:
+            constraintName: fk_hotel_amenity_hotel
+            baseTableName: hotel_amenity
+            baseColumnNames: hotel_id
+            referencedTableName: hotel
+            referencedColumnNames: id
+            onDelete: cascade
+        - addForeignKeyConstraint:
+            constraintName: fk_hotel_amenity_amenity
+            baseTableName: hotel_amenity
+            baseColumnNames: amenity_id
+            referencedTableName: amenity
+            referencedColumnNames: id
+            onDelete: cascade
+        - createIndex:
+            tableName: hotel_amenity
+            indexName: idx_hotel_amenity_hotel_id
+            columns:
+              - column:
+                  name: hotel_id
+        - createIndex:
+            tableName: hotel_amenity
+            indexName: idx_hotel_amenity_amenity_id
+            columns:
+              - column:
+                  name: amenity_id
