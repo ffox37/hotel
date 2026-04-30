@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -92,33 +93,18 @@ public class HotelServiceImpl implements HotelService{
 
   @Override
   public Map<String, Long> getHotelHistogram(final Parameter parameter) {
-    Map<String, Long> histogram = new LinkedHashMap<>();
-    switch (parameter) {
-      case CITY -> {
-        List<String> cities = hotelRepository.getAllCities();
-        for(String city : cities){
-          histogram.put(city, hotelRepository.countHotelsByCity(city));
-        }
-      }
-      case BRAND -> {
-        List<String> brands = hotelRepository.getAllBrands();
-        for(String brand : brands){
-          histogram.put(brand, hotelRepository.countHotelsByBrand(brand));
-        }
-      }
-      case COUNTRY -> {
-        List<String> countries = hotelRepository.getAllCountries();
-        for(String country : countries){
-          histogram.put(country, hotelRepository.countHotelsByCountry(country));
-        }
-      }
-      case AMENITIES -> {
-        List<Amenity> amenities = hotelRepository.getAllAmenities();
-        for(Amenity amenity : amenities){
-          histogram.put(amenity.getName(), hotelRepository.countHotelsByAmenity(amenity));
-        }
-      }
-    }
-    return histogram;
+    List<Object[]> histogram = switch (parameter) {
+      case CITY -> hotelRepository.countAndGetNumberOfHotelsForAllCities();
+      case BRAND -> hotelRepository.countAndGetNumberOfHotelsForAllBrands();
+      case COUNTRY -> hotelRepository.countAndGetNumberOfHotelsForAllCountries();
+      case AMENITIES -> hotelRepository.countAndGetNumberOfHotelsForAllAmenities();
+    };
+    return histogram.stream().
+        collect(Collectors.toMap(
+            row -> (String) row[0],
+            row -> (Long) row[1],
+            (existing, replacement) -> existing,
+            LinkedHashMap::new
+        ));
   }
 }
