@@ -11,9 +11,11 @@ import com.gpsolutions.hotel.model.Hotel;
 import com.gpsolutions.hotel.model.Parameter;
 import com.gpsolutions.hotel.repository.AmenityRepository;
 import com.gpsolutions.hotel.repository.HotelRepository;
+import com.gpsolutions.hotel.repository.HotelSpecification;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -44,8 +46,16 @@ public class HotelServiceImpl implements HotelService{
       final String brand,
       final String city,
       final String country,
-      final String amenities) {
-    return List.of();
+      final List<String> amenitiesNames) {
+    final List<Amenity> amenities = amenityRepository.findAllByNameIn(amenitiesNames);
+    final Specification<Hotel> spec = HotelSpecification.withFilters(
+        name,
+        brand,
+        city,
+        country,
+        amenities);
+    final List<Hotel> hotels = hotelRepository.findAll(spec);
+    return hotels.stream().map(hotelMapper::toDto).toList();
   }
 
   @Override

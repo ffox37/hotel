@@ -18,7 +18,7 @@ public interface HotelService {
       String brand,
       String city,
       String countries,
-      String amenities);
+      List<String> amenitiesNames);
 
   HotelDto createHotel(CreateHotelDto createHotelDto);
 

@@ -16,16 +16,16 @@ public enum Parameter {
     this.code = code;
   }
 
-  private String getCode(Parameter parameter){
+  public String getCode(Parameter parameter){
     return parameter.code;
   }
 
-  private static Parameter getParameter(String code) {
+  public static Parameter getParameter(String code) {
     for(Parameter param : values()){
       if(Objects.equals(param.code, code)){
         return param;
       }
     }
-    throw new BadRequestException("Wrong parameter!");
+    throw new BadRequestException("This parameter doesn't exist: " + code + ".");
   }
 }

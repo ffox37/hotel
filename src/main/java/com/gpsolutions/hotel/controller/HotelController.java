@@ -6,8 +6,11 @@ import com.gpsolutions.hotel.dto.HistogramDto;
 import com.gpsolutions.hotel.dto.HotelDto;
 import com.gpsolutions.hotel.model.Parameter;
 import com.gpsolutions.hotel.service.HotelService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,44 +22,45 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/property-view")
 @RequiredArgsConstructor
+@Validated
 public class HotelController {
 
   private final HotelService hotelService;
 
   @GetMapping("/hotels")
-  private List<HotelDto> getAllHotels(){
+  public List<HotelDto> getAllHotels(){
     return hotelService.getAllHotels();
   }
 
   @GetMapping("/hotels/{id}")
-  private FullHotelDto getFullHotelInfo(@PathVariable final Long id){
+  public FullHotelDto getFullHotelInfo(@PathVariable final Long id){
     return hotelService.getFullHotelInfo(id);
   }
 
   @GetMapping("/search")
-  private List<HotelDto> searchForHotels(
-      @RequestParam(name = "name") final String name,
-      @RequestParam(name = "name") final String brand,
-      @RequestParam(name = "brand") final String city,
-      @RequestParam(name = "country") final String country,
-      @RequestParam(name = "amenities") final String amenities){
+  public List<HotelDto> searchForHotels(
+      @Size(max = 255) @RequestParam(name = "name", required = false) final String name,
+      @Size(max = 255) @RequestParam(name = "brand", required = false) final String brand,
+      @Size(max = 50) @RequestParam(name = "city", required = false) final String city,
+      @Size(max = 50) @RequestParam(name = "country", required = false) final String country,
+      @RequestParam(name = "amenities", required = false) final List<@Size(max = 255) String> amenities){
     return hotelService.searchForHotels(name, brand, city, country, amenities);
   }
 
   @PostMapping("/hotels")
-  private HotelDto createHotel(@RequestBody final CreateHotelDto createHotelDto){
+  public HotelDto createHotel(@Valid @RequestBody final CreateHotelDto createHotelDto){
     return hotelService.createHotel(createHotelDto);
   }
 
   @PostMapping("/hotels/{id}/amenities")
-  private void addAmenitiesToHotel(
+  public void addAmenitiesToHotel(
       @PathVariable final Long id,
-      @RequestBody final List<String> amenities){
-    hotelService.addAmenitiesToHotel(id, amenities);
+      @RequestBody final List<@Size(max = 255) String> amenitiesNames){
+    hotelService.addAmenitiesToHotel(id, amenitiesNames);
   }
 
   @GetMapping("/histogram/{param}")
-  private List<HistogramDto> getHotelHistogram(@PathVariable final Parameter param){
+  public List<HistogramDto> getHotelHistogram(@PathVariable final Parameter param){
     return hotelService.getHotelHistogram(param);
   }
 }

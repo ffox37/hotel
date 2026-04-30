@@ -1,6 +1,8 @@
 package com.gpsolutions.hotel.repository;
 
 import com.gpsolutions.hotel.model.Amenity;
+import java.util.Collection;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AmenityRepository extends JpaRepository<Amenity, Long> {
@@ -8,4 +10,6 @@ public interface AmenityRepository extends JpaRepository<Amenity, Long> {
   boolean existsByName(String name);
 
   Amenity findByName(String name);
+
+  List<Amenity> findAllByNameIn(Collection<String> names);
 }

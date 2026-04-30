@@ -1,8 +1,11 @@
 package com.gpsolutions.hotel.dto;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public record ArrivalTimeDto(
-    String checkIn,
-    String checkOut
+    @NotNull @Size(max = 5) String checkIn,
+    @Size(max = 5) String checkOut
 ) {
 
 }
