@@ -19,7 +19,6 @@ public interface HotelMapper {
   HotelDto toDto(Hotel hotel);
 
   @Mapping(target = "amenities", expression = "java(hotel.getAmenities().stream().map(a -> a.getName()).toList())")
-
   @Mapping(target = "addressDto", source = "address")
   @Mapping(target = "contactsDto", source = "contacts")
   @Mapping(target = "arrivalTimeDto", source = "arrivalTime")
