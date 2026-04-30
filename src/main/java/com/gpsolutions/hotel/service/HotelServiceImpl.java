@@ -2,7 +2,6 @@ package com.gpsolutions.hotel.service;
 
 import com.gpsolutions.hotel.dto.CreateHotelDto;
 import com.gpsolutions.hotel.dto.FullHotelDto;
-import com.gpsolutions.hotel.dto.HistogramDto;
 import com.gpsolutions.hotel.dto.HotelDto;
 import com.gpsolutions.hotel.exceptions.NotFoundException;
 import com.gpsolutions.hotel.mapper.HotelMapper;
@@ -13,7 +12,9 @@ import com.gpsolutions.hotel.repository.AmenityRepository;
 import com.gpsolutions.hotel.repository.HotelRepository;
 import com.gpsolutions.hotel.repository.HotelSpecification;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -90,7 +91,34 @@ public class HotelServiceImpl implements HotelService{
   }
 
   @Override
-  public List<HistogramDto> getHotelHistogram(final Parameter parameter) {
-    return List.of();
+  public Map<String, Long> getHotelHistogram(final Parameter parameter) {
+    Map<String, Long> histogram = new LinkedHashMap<>();
+    switch (parameter) {
+      case CITY -> {
+        List<String> cities = hotelRepository.getAllCities();
+        for(String city : cities){
+          histogram.put(city, hotelRepository.countHotelsByCity(city));
+        }
+      }
+      case BRAND -> {
+        List<String> brands = hotelRepository.getAllBrands();
+        for(String brand : brands){
+          histogram.put(brand, hotelRepository.countHotelsByBrand(brand));
+        }
+      }
+      case COUNTRY -> {
+        List<String> countries = hotelRepository.getAllCountries();
+        for(String country : countries){
+          histogram.put(country, hotelRepository.countHotelsByCountry(country));
+        }
+      }
+      case AMENITIES -> {
+        List<Amenity> amenities = hotelRepository.getAllAmenities();
+        for(Amenity amenity : amenities){
+          histogram.put(amenity.getName(), hotelRepository.countHotelsByAmenity(amenity));
+        }
+      }
+    }
+    return histogram;
   }
 }

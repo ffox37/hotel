@@ -2,10 +2,10 @@ package com.gpsolutions.hotel.service;
 
 import com.gpsolutions.hotel.dto.CreateHotelDto;
 import com.gpsolutions.hotel.dto.FullHotelDto;
-import com.gpsolutions.hotel.dto.HistogramDto;
 import com.gpsolutions.hotel.dto.HotelDto;
 import com.gpsolutions.hotel.model.Parameter;
 import java.util.List;
+import java.util.Map;
 
 public interface HotelService {
 
@@ -24,5 +24,5 @@ public interface HotelService {
 
   void addAmenitiesToHotel(Long id, List<String> amenitiesNames);
 
-  List<HistogramDto> getHotelHistogram(Parameter parameter);
+  Map<String, Long> getHotelHistogram(Parameter parameter);
 }

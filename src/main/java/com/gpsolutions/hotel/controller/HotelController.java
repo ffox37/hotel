@@ -2,13 +2,13 @@ package com.gpsolutions.hotel.controller;
 
 import com.gpsolutions.hotel.dto.CreateHotelDto;
 import com.gpsolutions.hotel.dto.FullHotelDto;
-import com.gpsolutions.hotel.dto.HistogramDto;
 import com.gpsolutions.hotel.dto.HotelDto;
 import com.gpsolutions.hotel.model.Parameter;
 import com.gpsolutions.hotel.service.HotelService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,7 +60,7 @@ public class HotelController {
   }
 
   @GetMapping("/histogram/{param}")
-  public List<HistogramDto> getHotelHistogram(@PathVariable final Parameter param){
-    return hotelService.getHotelHistogram(param);
+  public Map<String, Long> getHotelHistogram(@PathVariable final String param){
+    return hotelService.getHotelHistogram(Parameter.getParameter(param));
   }
 }
