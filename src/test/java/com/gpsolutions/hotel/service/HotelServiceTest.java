@@ -7,12 +7,14 @@ import com.gpsolutions.hotel.dto.CreateHotelDto;
 import com.gpsolutions.hotel.dto.FullHotelDto;
 import com.gpsolutions.hotel.dto.HotelDto;
 import com.gpsolutions.hotel.model.Address;
-import com.gpsolutions.hotel.model.Amenity;
 import com.gpsolutions.hotel.model.ArrivalTime;
 import com.gpsolutions.hotel.model.Contacts;
 import com.gpsolutions.hotel.model.Hotel;
+import com.gpsolutions.hotel.model.Parameter;
 import com.gpsolutions.hotel.repository.HotelRepository;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,8 +49,6 @@ class HotelServiceTest {
     final ArrivalTime arrivalTime = new ArrivalTime(
         "14:00",
         "12:00");
-    final List<Amenity> amenities = List.of(
-        new Amenity(1L, "Free Wi-Fi", null));
     hotel = hotelRepository.save(new Hotel(
         null,
         "DoubleTree by Hilton Minsk",
@@ -57,7 +57,7 @@ class HotelServiceTest {
         address,
         contacts,
         arrivalTime,
-        List.of()));
+        new ArrayList<>()));
   }
 
   @Test
@@ -130,11 +130,53 @@ class HotelServiceTest {
         contactsDto,
         arrivalTimeDto);
     final HotelDto hotelDto = hotelService.createHotel(createHotelDto);
-
     Assertions.assertEquals(createHotelDto.name(), hotelDto.name());
     Assertions.assertEquals(createHotelDto.description(), hotelDto.description());
     Assertions.assertEquals(createHotelDto.brand(), hotelDto.brand());
     Assertions.assertEquals("1 Gogolya avenue Brest Belarus 240000", hotelDto.address());
     Assertions.assertEquals(createHotelDto.contacts().phone(), hotelDto.phone());
+  }
+
+  @Test
+  void shouldAddAmenitiesToHotel(){
+    hotelService.addAmenitiesToHotel(1L, List.of("Free Parking"));
+    final FullHotelDto fullHotelDto = hotelService.getFullHotelInfo(1L);
+    Assertions.assertEquals(
+        hotel.getAmenities().getFirst().getName(),
+        fullHotelDto.amenities().getFirst());
+  }
+
+  @Test
+  void getHotelHistograms(){
+    hotelService.addAmenitiesToHotel(1L, List.of("Free Parking"));
+    final Map<String, Long> cityHistogram = hotelService.getHotelHistogram(Parameter.CITY);
+    final Map<String, Long> brandHistogram = hotelService.getHotelHistogram(Parameter.BRAND);
+    final Map<String, Long> countryHistogram = hotelService.getHotelHistogram(Parameter.COUNTRY);
+    final Map<String, Long> amenitiesHistogram = hotelService.getHotelHistogram(Parameter.AMENITIES);
+    Assertions.assertEquals(
+        hotel.getAddress().getCity(),
+        cityHistogram.keySet().stream().toList().getFirst());
+    Assertions.assertEquals(
+        1L,
+        cityHistogram.values().stream().toList().getFirst());
+    Assertions.assertEquals(
+        hotel.getBrand(),
+        brandHistogram.keySet().stream().toList().getFirst());
+    Assertions.assertEquals(
+        1L,
+        brandHistogram.values().stream().toList().getFirst());
+    Assertions.assertEquals(
+        hotel.getAddress().getCountry(),
+        countryHistogram.keySet().stream().toList().getFirst());
+    Assertions.assertEquals(
+        1L,
+        countryHistogram.values().stream().toList().getFirst());
+    Assertions.assertEquals(
+        hotel.getAmenities().getFirst().getName(),
+        amenitiesHistogram.keySet().stream().toList().getFirst());
+    Assertions.assertEquals(
+        1L,
+        amenitiesHistogram.values().stream().toList().getFirst());
+
   }
 }
