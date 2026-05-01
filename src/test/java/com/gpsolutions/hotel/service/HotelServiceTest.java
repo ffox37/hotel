@@ -79,15 +79,15 @@ class HotelServiceTest {
     Assertions.assertEquals(hotel.getName(), fullHotelDto.name());
     Assertions.assertEquals(hotel.getDescription(), fullHotelDto.description());
     Assertions.assertEquals(hotel.getBrand(), fullHotelDto.brand());
-    Assertions.assertEquals(hotel.getAddress().getHouseNumber(), fullHotelDto.addressDto().houseNumber());
-    Assertions.assertEquals(hotel.getAddress().getStreet(), fullHotelDto.addressDto().street());
-    Assertions.assertEquals(hotel.getAddress().getCity(), fullHotelDto.addressDto().city());
-    Assertions.assertEquals(hotel.getAddress().getCountry(), fullHotelDto.addressDto().country());
-    Assertions.assertEquals(hotel.getAddress().getPostCode(), fullHotelDto.addressDto().postCode());
-    Assertions.assertEquals(hotel.getContacts().getPhone(), fullHotelDto.contactsDto().phone());
-    Assertions.assertEquals(hotel.getContacts().getEmail(), fullHotelDto.contactsDto().email());
-    Assertions.assertEquals(hotel.getArrivalTime().getCheckIn(), fullHotelDto.arrivalTimeDto().checkIn());
-    Assertions.assertEquals(hotel.getArrivalTime().getCheckOut(), fullHotelDto.arrivalTimeDto().checkOut());
+    Assertions.assertEquals(hotel.getAddress().getHouseNumber(), fullHotelDto.address().houseNumber());
+    Assertions.assertEquals(hotel.getAddress().getStreet(), fullHotelDto.address().street());
+    Assertions.assertEquals(hotel.getAddress().getCity(), fullHotelDto.address().city());
+    Assertions.assertEquals(hotel.getAddress().getCountry(), fullHotelDto.address().country());
+    Assertions.assertEquals(hotel.getAddress().getPostCode(), fullHotelDto.address().postCode());
+    Assertions.assertEquals(hotel.getContacts().getPhone(), fullHotelDto.contacts().phone());
+    Assertions.assertEquals(hotel.getContacts().getEmail(), fullHotelDto.contacts().email());
+    Assertions.assertEquals(hotel.getArrivalTime().getCheckIn(), fullHotelDto.arrivalTime().checkIn());
+    Assertions.assertEquals(hotel.getArrivalTime().getCheckOut(), fullHotelDto.arrivalTime().checkOut());
     Assertions.assertTrue(fullHotelDto.amenities().isEmpty());
   }
 
@@ -139,8 +139,8 @@ class HotelServiceTest {
 
   @Test
   void shouldAddAmenitiesToHotel(){
-    hotelService.addAmenitiesToHotel(1L, List.of("Free Parking"));
-    final FullHotelDto fullHotelDto = hotelService.getFullHotelInfo(1L);
+    hotelService.addAmenitiesToHotel(hotel.getId(), List.of("Free Parking"));
+    final FullHotelDto fullHotelDto = hotelService.getFullHotelInfo(hotel.getId());
     Assertions.assertEquals(
         hotel.getAmenities().getFirst().getName(),
         fullHotelDto.amenities().getFirst());
@@ -148,7 +148,7 @@ class HotelServiceTest {
 
   @Test
   void getHotelHistograms(){
-    hotelService.addAmenitiesToHotel(1L, List.of("Free Parking"));
+    hotelService.addAmenitiesToHotel(hotel.getId(), List.of("Free Parking"));
     final Map<String, Long> cityHistogram = hotelService.getHotelHistogram(Parameter.CITY);
     final Map<String, Long> brandHistogram = hotelService.getHotelHistogram(Parameter.BRAND);
     final Map<String, Long> countryHistogram = hotelService.getHotelHistogram(Parameter.COUNTRY);
@@ -177,6 +177,5 @@ class HotelServiceTest {
     Assertions.assertEquals(
         1L,
         amenitiesHistogram.values().stream().toList().getFirst());
-
   }
 }

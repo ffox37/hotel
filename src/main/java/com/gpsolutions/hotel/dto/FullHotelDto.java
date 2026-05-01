@@ -7,9 +7,9 @@ public record FullHotelDto(
     String name,
     String description,
     String brand,
-    AddressDto addressDto,
-    ContactsDto contactsDto,
-    ArrivalTimeDto arrivalTimeDto,
+    AddressDto address,
+    ContactsDto contacts,
+    ArrivalTimeDto arrivalTime,
     List<String> amenities
 ) {
 

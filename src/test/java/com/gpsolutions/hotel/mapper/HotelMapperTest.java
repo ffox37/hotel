@@ -132,31 +132,31 @@ class HotelMapperTest {
     Assertions.assertEquals(this.hotel.getBrand(), fullHotelDto.brand());
     Assertions.assertEquals(
         this.hotel.getAddress().getHouseNumber(),
-        fullHotelDto.addressDto().houseNumber());
+        fullHotelDto.address().houseNumber());
     Assertions.assertEquals(
         this.hotel.getAddress().getStreet(),
-        fullHotelDto.addressDto().street());
+        fullHotelDto.address().street());
     Assertions.assertEquals(
         this.hotel.getAddress().getCity(),
-        fullHotelDto.addressDto().city());
+        fullHotelDto.address().city());
     Assertions.assertEquals(
         this.hotel.getAddress().getCountry(),
-        fullHotelDto.addressDto().country());
+        fullHotelDto.address().country());
     Assertions.assertEquals(
         this.hotel.getAddress().getPostCode(),
-        fullHotelDto.addressDto().postCode());
+        fullHotelDto.address().postCode());
     Assertions.assertEquals(
         this.hotel.getContacts().getPhone(),
-        fullHotelDto.contactsDto().phone());
+        fullHotelDto.contacts().phone());
     Assertions.assertEquals(
         this.hotel.getContacts().getEmail(),
-        fullHotelDto.contactsDto().email());
+        fullHotelDto.contacts().email());
     Assertions.assertEquals(
         this.hotel.getArrivalTime().getCheckIn(),
-        fullHotelDto.arrivalTimeDto().checkIn());
+        fullHotelDto.arrivalTime().checkIn());
     Assertions.assertEquals(
         this.hotel.getArrivalTime().getCheckOut(),
-        fullHotelDto.arrivalTimeDto().checkOut());
+        fullHotelDto.arrivalTime().checkOut());
     Assertions.assertEquals(
         this.hotel.getAmenities().getFirst().getName(),
         fullHotelDto.amenities().getFirst());
