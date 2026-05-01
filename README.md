@@ -6,9 +6,9 @@
 
 ## 🚀 Технологический стек
 
-- **Core:** Java 17, Spring Boot 3.x
+- **Core:** Java 21, Spring Boot 4.0.6
 - **Data:** Spring Data JPA, Hibernate, H2 (In-memory)
-- **Validation:** Bean Validation 3.0 (Jakarta)
+- **Validation:** Bean Validation (Jakarta)
 - **Mapping:** MapStruct (высокопроизводительный маппинг DTO)
 - **Testing:** JUnit 5, Mockito, MockMvc
 - **Lombok:** Минимизация шаблонного кода
@@ -89,7 +89,7 @@
 
 ## 🧪 Тестирование
 
-Проект покрыт юнит и интеграционными тестами:
+Проект покрыт unit и интеграционными тестами:
 - **Repository Tests:** Проверка JPA запросов и схемы БД.
 - **Service Tests:** Бизнес-логика, работа с транзакциями и Hibernate.
 - **Controller Tests:** Интеграционные тесты API с использованием `MockMvc`.
